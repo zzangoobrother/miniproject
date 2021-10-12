@@ -1,6 +1,7 @@
 package com.miniproject.spring.controller;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
+import com.miniproject.spring.model.User;
 import com.miniproject.spring.service.KakaoUserService;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -17,8 +18,7 @@ public class UserKakaoController {
 
     //카카오
     @GetMapping("/kakao/callback")
-    public String kakaoLogin(@RequestParam String code) throws JsonProcessingException {
-        kakaoUserService.kakaoLogin(code);
-        return "redirect:/";
+    public User kakaoLogin(@RequestParam String code) throws JsonProcessingException {
+        return kakaoUserService.kakaoLogin(code);
     }
 }

@@ -7,7 +7,6 @@ import com.miniproject.spring.model.User;
 import com.miniproject.spring.security.jwt.JwtTokenProvider;
 import com.miniproject.spring.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
@@ -29,19 +28,6 @@ public class UserController {
         this.jwtTokenProvider = jwtTokenProvider;
     }
 
-    // 회원 로그인 페이지
-    @GetMapping("/login")
-    public String login(@RequestBody UserRequestDto user) {
-
-        return "login";
-    }
-
-    //회원가입 페이지
-    @GetMapping("/signup")
-    public void userRegister(@RequestBody SignUpRequestDto requestDto) throws HanghaeMiniException {
-//        userService.registerUser(requestDto);
-    }
-
     //가입 요청 처리
     @PostMapping("/signup")
     public void registerUser(@RequestBody SignUpRequestDto requestDto) throws HanghaeMiniException {
@@ -51,8 +37,8 @@ public class UserController {
 
     // 로그인
     @PostMapping("/login")
-    public List<Map<String,String>> login(@RequestBody SignUpRequestDto requestDto) {
-        User user = userService.login(requestDto.getEmail());
+    public List<Map<String,String>> login(@RequestBody UserRequestDto requestDto) throws HanghaeMiniException {
+        User user = userService.login(requestDto);
 
         Map<String,String> username =new HashMap<>();
         Map<String,String>token = new HashMap<>();

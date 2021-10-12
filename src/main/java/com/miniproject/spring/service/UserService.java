@@ -7,11 +7,9 @@ import com.miniproject.spring.model.User;
 import com.miniproject.spring.model.UserRoleEnum;
 import com.miniproject.spring.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import javax.swing.*;
 import java.util.Optional;
 
 @Service
@@ -34,7 +32,6 @@ public class UserService {
 
         // 패스워드 암호화
         String pw = passwordEncoder.encode(requestDto.getPw());
-
 
         //email(id) 중복체크
         String email = requestDto.getEmail();
@@ -74,7 +71,7 @@ public class UserService {
         UserRoleEnum role = UserRoleEnum.USER;
         if (requestDto.isAdmin()) {
             if (!requestDto.getAdminToken().equals(ADMIN_TOKEN)) {
-                throw new IllegalArgumentException("관리자 암호가 틀려 등록이 불가능합니다.");
+                throw new HanghaeMiniException("관리자 암호가 틀려 등록이 불가능합니다.");
             }
             role = UserRoleEnum.ADMIN;
         }
@@ -83,10 +80,17 @@ public class UserService {
         userRepository.save(user);
     }
 
-    public User login(String email) {
-        return userRepository.findByEmail(email).orElseThrow(
-                () -> new IllegalArgumentException("이메일을 찾을 수 없습니다.")
+    public User login(UserRequestDto requestDto) throws HanghaeMiniException {
+        User user = userRepository.findByEmail(requestDto.getEmail()).orElseThrow(
+                () -> new HanghaeMiniException("이메일을 찾을 수 없습니다.")
         );
+
+        // 패스워드 암호화
+        if (!passwordEncoder.matches(requestDto.getPw(), user.getPw())) {
+            throw new HanghaeMiniException("비밀번호가 맞지 않습니다.");
+        }
+
+        return user;
     }
 
 

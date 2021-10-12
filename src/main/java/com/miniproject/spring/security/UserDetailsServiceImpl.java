@@ -1,6 +1,5 @@
 package com.miniproject.spring.security;
 
-import com.miniproject.spring.security.UserDetailsImpl;
 import com.miniproject.spring.model.User;
 import com.miniproject.spring.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;

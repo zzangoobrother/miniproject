@@ -4,12 +4,10 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.miniproject.spring.dto.KakaoUserInfoDto;
-import com.miniproject.spring.dto.SignUpRequestDto;
-import com.miniproject.spring.exception.HanghaeMiniException;
 import com.miniproject.spring.model.User;
 import com.miniproject.spring.model.UserRoleEnum;
-import com.miniproject.spring.security.UserDetailsImpl;
 import com.miniproject.spring.repository.UserRepository;
+import com.miniproject.spring.security.UserDetailsImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
@@ -25,7 +23,6 @@ import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 import org.springframework.web.client.RestTemplate;
 
-import java.util.Optional;
 import java.util.UUID;
 
 @Service
@@ -39,18 +36,20 @@ public class KakaoUserService {
         this.passwordEncoder = passwordEncoder;
     }
 
-    public void kakaoLogin(String code) throws JsonProcessingException {
+    public User kakaoLogin(String code) throws JsonProcessingException {
 // 1. "인가 코드"로 "액세스 토큰" 요청
         String accessToken = getAccessToken(code);
 
 // 2. "액세스 토큰"으로 "카카오 사용자 정보" 가져오기
         KakaoUserInfoDto kakaoUserInfo = getKakaoUserInfo(accessToken);
 
-// 3. "카카오 사용자 정보"로 필요시 회원가입
-        User kakaoUser = registerKakaoUserIfNeeded(kakaoUserInfo);
+// 3. "카카오 사용자 정보"로 필요시 회원가입  및 이미 같은 이메일이 있으면 기존회원으로 로그인
+        User kakaoUser = registerKakaoOrUpdateKakao(kakaoUserInfo);
 
 // 4. 강제 로그인 처리
         forceLogin(kakaoUser);
+
+        return kakaoUser;
     }
 
     private String getAccessToken(String code) throws JsonProcessingException {
@@ -111,6 +110,16 @@ public class KakaoUserService {
         return new KakaoUserInfoDto(id, nickname, email);
     }
 
+    private User registerKakaoOrUpdateKakao(KakaoUserInfoDto kakaoUserInfo) {
+        User sameUser = userRepository.findByEmail(kakaoUserInfo.getEmail()).orElse(null);
+
+        if (sameUser == null) {
+            return registerKakaoUserIfNeeded(kakaoUserInfo);
+        } else {
+            return updateKakaoUser(sameUser, kakaoUserInfo);
+        }
+    }
+
     private User registerKakaoUserIfNeeded(KakaoUserInfoDto kakaoUserInfo) {
 // DB 에 중복된 Kakao Id 가 있는지 확인
         Long kakaoId = kakaoUserInfo.getId();
@@ -128,12 +137,6 @@ public class KakaoUserService {
 // email: kakao email
             String email = kakaoUserInfo.getEmail();
 
-            //카카오 email,그냥 email 중복확인
-//            String id = requestDto.getEmail();
-//            Optional<User> found = userRepository.findByEmail(email);
-//            if (found.isPresent()){
-//                throw new HanghaeMiniException("중복된 email이 존재합니다.");
-//            }
 // role: 일반 사용자
             UserRoleEnum role = UserRoleEnum.USER;
 
@@ -141,6 +144,15 @@ public class KakaoUserService {
             userRepository.save(kakaoUser);
         }
         return kakaoUser;
+    }
+
+    private User updateKakaoUser(User sameUser, KakaoUserInfoDto kakaoUserInfo) {
+        if (sameUser.getKakaoId() == null) {
+            System.out.println("중복");
+            sameUser.setKakaoId(kakaoUserInfo.getId());
+            userRepository.save(sameUser);
+        }
+        return sameUser;
     }
 
     private void forceLogin(User kakaoUser) {
