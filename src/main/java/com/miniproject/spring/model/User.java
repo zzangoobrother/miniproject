@@ -1,6 +1,7 @@
 package com.miniproject.spring.model;
 
 
+import com.miniproject.spring.dto.SignUpRequestDto;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -41,5 +42,20 @@ public class User {
         this.nickname = nickname;
         this.role = role;
         this.kakaoId = kakaoId;
+    }
+
+    public User(String email, String pw, String nickname, UserRoleEnum role) {
+        this.email = email;
+        this.pw = pw;
+        this.nickname = nickname;
+        this.role = role;
+        this.kakaoId = null;
+    }
+
+    public User(SignUpRequestDto signUpRequestDto) {
+        this.email = signUpRequestDto.getEmail();
+        this.pw = signUpRequestDto.getPw();
+        this.nickname = signUpRequestDto.getNickname();
+        this.kakaoId = null;
     }
 }

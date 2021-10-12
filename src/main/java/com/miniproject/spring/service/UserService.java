@@ -9,6 +9,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import javax.swing.*;
+import java.util.Optional;
 
 @Service
 public class UserService {
@@ -25,7 +26,6 @@ public class UserService {
     public void registerUser(SignUpRequestDto requestDto) {
         // 패스워드 암호화
         String pw = passwordEncoder.encode(requestDto.getPw());
-
         //사용자 ROLE 확인
         UserRoleEnum role = UserRoleEnum.USER;
         if (requestDto.isAdmin()) {
@@ -35,10 +35,15 @@ public class UserService {
             role = UserRoleEnum.ADMIN;
         }
 
-        User user = new User(email, pw, nickname, role);
+        User user = new User(requestDto.getEmail(), pw, requestDto.getNickname(), role);
         userRepository.save(user);
     }
 
+    public User login(String email) {
+        return userRepository.findByEmail(email).orElseThrow(
+                () -> new IllegalArgumentException("이메일을 찾을 수 없습니다.")
+        );
+    }
 }
 
 
