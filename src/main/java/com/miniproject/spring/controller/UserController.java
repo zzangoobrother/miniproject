@@ -1,6 +1,7 @@
 package com.miniproject.spring.controller;
 
 import com.miniproject.spring.dto.SignUpRequestDto;
+import com.miniproject.spring.exception.HanghaeMiniException;
 import com.miniproject.spring.model.User;
 import com.miniproject.spring.security.jwt.JwtTokenProvider;
 import com.miniproject.spring.service.UserService;
@@ -50,7 +51,7 @@ public class UserController {
 
     // 로그인
     @PostMapping("/user/login")
-    public List<Map<String,String>> login(@RequestBody SignUpRequestDto requestDto) {
+    public List<Map<String,String>> login(@RequestBody SignUpRequestDto requestDto) throws HanghaeMiniException {
         User user = userService.login(requestDto.getEmail());
 
         Map<String,String> username =new HashMap<>();
