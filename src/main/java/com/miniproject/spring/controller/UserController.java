@@ -45,7 +45,7 @@ public class UserController {
     //가입 요청 처리
     @PostMapping("/signup")
     public void registerUser(@RequestBody SignUpRequestDto requestDto) throws HanghaeMiniException {
-        userService.createUser(requestDto);
+        userService.registerUser(requestDto);
     }
 
 

@@ -27,14 +27,10 @@ public class UserService {
         this.passwordEncoder = passwordEncoder;
     }
 
-    //가입
-    public void createUser(SignUpRequestDto requestDto) throws HanghaeMiniException {
-        registerUser(requestDto);
-        User user = new User(requestDto);
-        userRepository.save(user);
-    }
 
-    private void registerUser(SignUpRequestDto requestDto) throws HanghaeMiniException {
+
+
+    public void registerUser(SignUpRequestDto requestDto) throws HanghaeMiniException {
 
         // 패스워드 암호화
         String pw = passwordEncoder.encode(requestDto.getPw());
@@ -43,7 +39,6 @@ public class UserService {
         //email(id) 중복체크
         String email = requestDto.getEmail();
         Optional<User> found = userRepository.findByEmail(email);
-        System.out.println(email);
         if (found.isPresent()){
             throw new HanghaeMiniException("중복된 email이 존재합니다.");
         }
@@ -57,6 +52,21 @@ public class UserService {
         }
 
         //비밀번호확인
+        String password = requestDto.getPw();
+        String passwordCheck = requestDto.getPwCheck();
+
+        if (!password.isEmpty() && !passwordCheck.isEmpty()) {
+            if (password.length() >= 6 && password.length() <= 20) {
+                if (!password.equals(passwordCheck)) {
+                    throw new HanghaeMiniException("비밀번호가 일치하지 않습니다.");
+                }
+            } else {
+                throw new HanghaeMiniException("비밀번호는 6~20자리로 해주세요");
+
+            }
+        } else {
+            throw new HanghaeMiniException("비밀번호를 입력해주세요");
+        }
 
 
 
@@ -69,6 +79,8 @@ public class UserService {
             role = UserRoleEnum.ADMIN;
         }
 
+        User user = new User(email, pw, nickname, role);
+        userRepository.save(user);
     }
 
     public User login(String email) {

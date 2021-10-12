@@ -4,6 +4,8 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.miniproject.spring.dto.KakaoUserInfoDto;
+import com.miniproject.spring.dto.SignUpRequestDto;
+import com.miniproject.spring.exception.HanghaeMiniException;
 import com.miniproject.spring.model.User;
 import com.miniproject.spring.model.UserRoleEnum;
 import com.miniproject.spring.security.UserDetailsImpl;
@@ -23,6 +25,7 @@ import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 import org.springframework.web.client.RestTemplate;
 
+import java.util.Optional;
 import java.util.UUID;
 
 @Service
@@ -124,6 +127,13 @@ public class KakaoUserService {
 
 // email: kakao email
             String email = kakaoUserInfo.getEmail();
+
+            //카카오 email,그냥 email 중복확인
+//            String id = requestDto.getEmail();
+//            Optional<User> found = userRepository.findByEmail(email);
+//            if (found.isPresent()){
+//                throw new HanghaeMiniException("중복된 email이 존재합니다.");
+//            }
 // role: 일반 사용자
             UserRoleEnum role = UserRoleEnum.USER;
 
@@ -138,4 +148,5 @@ public class KakaoUserService {
         Authentication authentication = new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
         SecurityContextHolder.getContext().setAuthentication(authentication);
     }
+
 }
