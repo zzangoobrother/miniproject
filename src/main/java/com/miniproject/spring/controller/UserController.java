@@ -11,9 +11,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 @RestController
@@ -30,24 +28,33 @@ public class UserController {
 
     //가입 요청 처리
     @PostMapping("/signup")
-    public void registerUser(@RequestBody SignUpRequestDto requestDto) throws HanghaeMiniException {
-        userService.registerUser(requestDto);
+    public User registerUser(@RequestBody SignUpRequestDto requestDto) throws HanghaeMiniException {
+        return userService.registerUser(requestDto);
     }
 
 
     // 로그인
     @PostMapping("/login")
-    public List<Map<String,String>> login(@RequestBody UserRequestDto requestDto) throws HanghaeMiniException {
+    public Map<String,String> login(@RequestBody UserRequestDto requestDto) throws HanghaeMiniException {
         User user = userService.login(requestDto);
 
-        Map<String,String> username =new HashMap<>();
-        Map<String,String>token = new HashMap<>();
-        List<Map<String,String>> tu = new ArrayList<>(); // -> 리스트를 만드는데, Map형태(키:밸류 형태)의 변수들을 담을 것이다.
-        token.put("token",jwtTokenProvider.createToken(user.getNickname(), user.getEmail())); // "username" : {username}
-        username.put("nickname",user.getNickname()); // "token" : {token}
-        tu.add(username); //List형태 ["username" : {username}]
-        tu.add(token); //List형태 ["token" : {token}]
+        Map<String,String> result =new HashMap<>();
+        result.put("token",jwtTokenProvider.createToken(user.getNickname(), user.getEmail())); // "username" : {username}
+        result.put("email", user.getEmail());
+        result.put("nickname", user.getNickname());
+        result.put("result", "success");
 
-        return tu;
+        return result;
     }
+
+    @PostMapping("/signup/duplicate_id")
+    public Map<String, String> duplicateId(@RequestBody UserRequestDto userRequestDto) {
+        return userService.duplicateId(userRequestDto);
+    }
+
+    @PostMapping("/signup/duplicate_nickname")
+    public Map<String, String> duplicateNickname(@RequestBody SignUpRequestDto signUpRequestDto) {
+        return userService.duplicateNickname(signUpRequestDto);
+    }
+
 }

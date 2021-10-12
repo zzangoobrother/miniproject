@@ -10,6 +10,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Optional;
 
 @Service
@@ -28,7 +30,7 @@ public class UserService {
 
 
 
-    public void registerUser(SignUpRequestDto requestDto) throws HanghaeMiniException {
+    public User registerUser(SignUpRequestDto requestDto) throws HanghaeMiniException {
 
         // 패스워드 암호화
         String pw = passwordEncoder.encode(requestDto.getPw());
@@ -77,7 +79,7 @@ public class UserService {
         }
 
         User user = new User(email, pw, nickname, role);
-        userRepository.save(user);
+        return userRepository.save(user);
     }
 
     public User login(UserRequestDto requestDto) throws HanghaeMiniException {
@@ -94,6 +96,32 @@ public class UserService {
     }
 
 
+    public Map<String, String> duplicateId(UserRequestDto userRequestDto) {
+        User user = userRepository.findByEmail(userRequestDto.getEmail()).orElse(null);
+
+        Map<String, String> result = new HashMap<>();
+        if (user == null) {
+            result.put("result", "success");
+            return result;
+        }
+
+        result.put("result", "fail");
+        result.put("message", "중복된 ID가 있습니다.");
+        return result;
+    }
+
+    public Map<String, String> duplicateNickname(SignUpRequestDto signUpRequestDto) {
+        User user = userRepository.findByNickname(signUpRequestDto.getNickname()).orElse(null);
+        Map<String, String> result = new HashMap<>();
+        if (user == null) {
+            result.put("result", "success");
+            return result;
+        }
+
+        result.put("result", "fail");
+        result.put("message", "중복된 닉네임이 있습니다.");
+        return result;
+    }
 }
 
 

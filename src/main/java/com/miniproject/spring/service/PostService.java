@@ -5,6 +5,8 @@ import com.miniproject.spring.model.Post;
 import com.miniproject.spring.repository.PostRepository;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 public class PostService {
 
@@ -18,5 +20,9 @@ public class PostService {
         return postRepository.findById(id).orElseThrow(
                 () -> new HanghaeMiniException("게시글을 찾을 수 없습니다.")
         );
+    }
+
+    public List<Post> home() {
+        return postRepository.findAllByOrderByModifiedDt();
     }
 }
