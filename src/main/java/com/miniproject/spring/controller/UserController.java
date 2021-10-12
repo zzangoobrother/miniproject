@@ -1,11 +1,12 @@
 package com.miniproject.spring.controller;
 
 import com.miniproject.spring.dto.SignUpRequestDto;
+import com.miniproject.spring.dto.UserRequestDto;
+import com.miniproject.spring.exception.HanghaeMiniException;
 import com.miniproject.spring.model.User;
 import com.miniproject.spring.security.jwt.JwtTokenProvider;
 import com.miniproject.spring.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -29,27 +30,27 @@ public class UserController {
     }
 
     // 회원 로그인 페이지
-    @GetMapping("/user/login")
-    public String login() {
+    @GetMapping("/login")
+    public String login(@RequestBody UserRequestDto user) {
+
         return "login";
     }
 
     //회원가입 페이지
     @GetMapping("/signup")
-    public String signup() {
-
-        return "signup";
+    public void userRegister(@RequestBody SignUpRequestDto requestDto) throws HanghaeMiniException {
+//        userService.registerUser(requestDto);
     }
 
     //가입 요청 처리
     @PostMapping("/signup")
-    public String registerUser(@RequestBody SignUpRequestDto requestDto, Model model) {
-
-        return "redirect:/";
+    public void registerUser(@RequestBody SignUpRequestDto requestDto) throws HanghaeMiniException {
+        userService.createUser(requestDto);
     }
 
+
     // 로그인
-    @PostMapping("/user/login")
+    @PostMapping("/login")
     public List<Map<String,String>> login(@RequestBody SignUpRequestDto requestDto) {
         User user = userService.login(requestDto.getEmail());
 
