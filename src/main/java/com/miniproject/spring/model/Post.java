@@ -5,6 +5,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import java.util.List;
 
 @Getter
 @NoArgsConstructor
@@ -27,6 +28,9 @@ public class Post extends TimeStamped {
     @Column(nullable = false)
     private String contents;
 
+    @OneToMany
+    private List<Comment> commentList;
+
     public Post(String title, String author, String nickname, String contents) {
         this.title = title;
         this.author = author;
@@ -35,6 +39,12 @@ public class Post extends TimeStamped {
     }
 
     public Post(PostRequestDto postRequestDto) {
+        this.title = postRequestDto.getTitle();
+        this.contents = postRequestDto.getContents();
+
+    }
+
+    public void update(PostRequestDto postRequestDto){
         this.title = postRequestDto.getTitle();
         this.contents = postRequestDto.getContents();
     }

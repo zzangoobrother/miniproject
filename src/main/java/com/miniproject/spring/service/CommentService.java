@@ -12,11 +12,12 @@ public class CommentService {
     private final CommentRepository commentRepository;
 
     public CommentService(CommentRepository commentRepository) {
+
         this.commentRepository = commentRepository;
     }
 
     public List<Comment> getComments() {
+
         return commentRepository.findAll();
     }
 }
-//test
