@@ -32,8 +32,7 @@ public class PostService {
     public String createPost(PostRequestDto postRequestDto) {
         try {
             Post post = new Post(postRequestDto);
-            post.setNickname("test");
-            postRepository.save(post).getNickname();
+            postRepository.save(post);
             return "success";
         } catch (Exception e)
         {

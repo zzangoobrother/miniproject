@@ -44,7 +44,7 @@ public class PostController {
     }
 
     //게시물 작성
-    @PostMapping("/posts")
+    @PostMapping("/posts/new")
     public Map<String, String> createPost(@RequestBody PostRequestDto postRequestDto, @AuthenticationPrincipal UserDetailsImpl userDetails) {
            if(userDetails != null){
                postRequestDto.setAuthor(userDetails.getUser().getNickname());

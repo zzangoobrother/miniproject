@@ -45,7 +45,7 @@ public class Post extends TimeStamped {
         this.title = postRequestDto.getTitle();
         this.contents = postRequestDto.getContents();
         this.author = postRequestDto.getAuthor();
-
+        this.nickname = postRequestDto.getAuthor();
     }
 
     public void update(PostRequestDto postRequestDto){
