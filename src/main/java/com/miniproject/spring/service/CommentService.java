@@ -31,6 +31,7 @@ public class CommentService {
     public Comment updateComment(Long id, CommentRequestDto commentRequestDto) {
         Comment comment = commentRepository.findById(id).orElse(null);
         comment.update(commentRequestDto);
+        
         return comment;
     }
 
