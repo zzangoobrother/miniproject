@@ -27,6 +27,7 @@ public class CommentService {
         return commentRepository.findAll();
     }
 
+    //수정
     @Transactional
     public Comment updateComment(Long id, CommentRequestDto commentRequestDto) {
         Comment comment = commentRepository.findById(id).orElse(null);
@@ -35,10 +36,12 @@ public class CommentService {
         return comment;
     }
 
+    //삭제
     public void deleteComment(Long id) {
         commentRepository.deleteById(id);
     }
 
+    //등록
     public Comment createComment(CommentRequestDto commentRequestDto, UserDetailsImpl userDetails) throws HanghaeMiniException {
         Post post = postRepository.findById(commentRequestDto.getPostId()).orElseThrow(
                 () -> new HanghaeMiniException("해당 게시글을 찾을 수 없습니다.")
