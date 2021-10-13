@@ -1,14 +1,12 @@
 package com.miniproject.spring.controller;
 
+import com.miniproject.spring.dto.PostRequestDto;
 import com.miniproject.spring.exception.HanghaeMiniException;
 import com.miniproject.spring.model.Comment;
 import com.miniproject.spring.model.Post;
 import com.miniproject.spring.service.CommentService;
 import com.miniproject.spring.service.PostService;
-import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.HashMap;
 import java.util.List;
@@ -40,6 +38,36 @@ public class PostController {
         List<Comment> comments = commentService.getComments();
         result.put("comments", comments);
 
+        return result;
+    }
+
+    //게시물 작성
+    @PostMapping("/posts")
+    public Map<String, String> createPost(@RequestBody PostRequestDto postRequestDto) {
+        Post post = new Post(postRequestDto);
+        Map<String, String> result = new HashMap<>();
+        result.put("result", "success");
+        return result;
+
+    }
+
+
+    //게시물 수정
+    @PutMapping("/posts/{id}")
+    public Map<String, Object> update( @PathVariable Long id, @RequestBody PostRequestDto postRequestDto) {
+        postService.update(id, postRequestDto);
+        Map<String, Object> result = new HashMap<>();
+        result.put("result", "success");
+        return result;
+    }
+
+
+    //게시물 삭제
+    @DeleteMapping("/posts/{id}")
+    public Map<String, Object> deletePost(@PathVariable Long id) {
+        postService.deletePost(id);
+        Map<String, Object> result = new HashMap<>();
+        result.put("result", "success");
         return result;
     }
 }
