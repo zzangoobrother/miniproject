@@ -2,6 +2,7 @@ package com.miniproject.spring.service;
 
 import com.miniproject.spring.dto.PostRequestDto;
 import com.miniproject.spring.exception.HanghaeMiniException;
+import com.miniproject.spring.model.Comment;
 import com.miniproject.spring.model.Post;
 import com.miniproject.spring.repository.PostRepository;
 import lombok.RequiredArgsConstructor;
@@ -18,28 +19,31 @@ public class PostService {
 
     //수정
     @Transactional
-    public Long update(Long id, PostRequestDto postRequestDto) throws HanghaeMiniException {
+    public Post updatePost(Long id, PostRequestDto postRequestDto) throws HanghaeMiniException {
         Post post = postRepository.findById(id).orElseThrow(
                 () -> new HanghaeMiniException("존재하지않습니다.")
         );
         post.update(postRequestDto);
-        return post.getId();
+        return post;
 
     }
 
     //작성
-    @Transactional
     public String createPost(PostRequestDto postRequestDto) {
-        Post post = new Post(postRequestDto);
-        return postRepository.save(post).getNickname();
+        try {
+            Post post = new Post(postRequestDto);
+            post.setNickname("test");
+            postRepository.save(post).getNickname();
+            return "success";
+        } catch (Exception e)
+        {
+            return "fail";
+        }
     }
 
     //삭제
-    @Transactional
-    public Long deletePost(Long id)  {
+    public void deletePost(Long id) {
         postRepository.deleteById(id);
-
-        return id;
     }
 
     public List<Post> home() {
