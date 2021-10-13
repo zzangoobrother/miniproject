@@ -36,10 +36,20 @@ public class PostService {
 
     //삭제
     @Transactional
-    public Long deletePost(Long id, PostRequestDto postRequestDto)  {
-        Post post = postRepository.deleteById();
+    public Long deletePost(Long id)  {
+        postRepository.deleteById(id);
 
         return id;
+    }
+
+    public List<Post> home() {
+        return postRepository.findAllByOrderByModifiedDt();
+    }
+
+    public Post getPosts(Long id) throws HanghaeMiniException {
+        return postRepository.findById(id).orElseThrow(
+                () -> new HanghaeMiniException("게시글을 찾을 수 없습니다.")
+        );
     }
 }
 

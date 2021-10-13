@@ -54,7 +54,7 @@ public class PostController {
 
     //게시물 수정
     @PutMapping("/posts/{id}")
-    public Map<String, Object> update( @PathVariable Long id, @RequestBody PostRequestDto postRequestDto) {
+    public Map<String, Object> update( @PathVariable Long id, @RequestBody PostRequestDto postRequestDto) throws HanghaeMiniException {
         postService.update(id, postRequestDto);
         Map<String, Object> result = new HashMap<>();
         result.put("result", "success");
