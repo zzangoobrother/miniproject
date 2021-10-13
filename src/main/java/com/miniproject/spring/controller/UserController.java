@@ -28,8 +28,11 @@ public class UserController {
 
     //가입 요청 처리
     @PostMapping("/signup")
-    public User registerUser(@RequestBody SignUpRequestDto requestDto) throws HanghaeMiniException {
-        return userService.registerUser(requestDto);
+    public Map<String, String> registerUser(@RequestBody SignUpRequestDto requestDto) throws HanghaeMiniException {
+        userService.registerUser(requestDto);
+        Map<String, String> result = new HashMap<>();
+        result.put("result", "success");
+        return result;
     }
 
 
