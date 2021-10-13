@@ -106,7 +106,7 @@ public class UserService {
         }
 
         result.put("result", "fail");
-        result.put("message", "중복된 ID가 있습니다.");
+        result.put("message", "중복된 email이 존재합니다.");
         return result;
     }
 

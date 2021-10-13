@@ -12,12 +12,12 @@ public class RestApiExceptionHandler {
     public ResponseEntity<Object> handleApiRequestException(HanghaeMiniException ex) {
         RestApiException restApiException = new RestApiException();
         restApiException.setResult("fail");
-        restApiException.setHttpStatus(HttpStatus.BAD_REQUEST);
+        restApiException.setHttpStatus(HttpStatus.OK);
         restApiException.setErrorMessage(ex.getMessage());
 
         return new ResponseEntity(
                 restApiException,
-                HttpStatus.BAD_REQUEST
+                HttpStatus.OK
         );
     }
 }
