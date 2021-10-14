@@ -14,7 +14,6 @@ import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 @RequiredArgsConstructor
@@ -75,7 +74,7 @@ public class PostService {
 
     public Page<Post> home(Pageable pageable) {
 
-        return postRepository.findAllByOrderByModifiedDt(pageable);
+        return postRepository.findAllByOrderByModifiedDtDesc(pageable);
     }
 
     public Post getPosts(Long id) throws HanghaeMiniException {

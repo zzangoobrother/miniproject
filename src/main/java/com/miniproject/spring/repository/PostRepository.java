@@ -14,7 +14,7 @@ import java.util.List;
 public interface PostRepository extends JpaRepository<Post, Long> {
 
     Page<Post> findAllByCategoryOrderByModifiedDtDesc(PostCategoryEnum category, Pageable pageable);
-    Page<Post> findAllByOrderByModifiedDt(Pageable pageable);
+    Page<Post> findAllByOrderByModifiedDtDesc(Pageable pageable);
 
 
 }

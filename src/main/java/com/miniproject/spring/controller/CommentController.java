@@ -3,10 +3,8 @@ package com.miniproject.spring.controller;
 import com.miniproject.spring.dto.CommentRequestDto;
 import com.miniproject.spring.exception.HanghaeMiniException;
 import com.miniproject.spring.model.Comment;
-import com.miniproject.spring.model.Post;
 import com.miniproject.spring.security.UserDetailsImpl;
 import com.miniproject.spring.service.CommentService;
-import org.springframework.data.domain.Page;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 

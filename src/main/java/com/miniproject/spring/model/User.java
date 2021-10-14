@@ -1,6 +1,5 @@
 package com.miniproject.spring.model;
 
-
 import com.miniproject.spring.dto.SignUpRequestDto;
 import lombok.Getter;
 import lombok.NoArgsConstructor;

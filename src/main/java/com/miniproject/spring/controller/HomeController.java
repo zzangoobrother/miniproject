@@ -1,21 +1,16 @@
 package com.miniproject.spring.controller;
 
-import com.miniproject.spring.model.Comment;
 import com.miniproject.spring.model.Post;
 import com.miniproject.spring.service.CommentService;
 import com.miniproject.spring.service.PostService;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.web.PageableDefault;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 @RestController
@@ -31,10 +26,11 @@ public class HomeController {
     }
 
     // 메인페이지 게시글 전체 조회
-    @GetMapping("/posts")
-    public Map<String, Object> home(@PageableDefault(page = 0,
+    @GetMapping("/posts/{page}")
+    public Map<String, Object> home(@PathVariable int page, @PageableDefault(page = 0,
             size = 10, sort = "modifiedDt", direction = Sort.Direction.DESC) Pageable pageable) {
-        Page<Post> posts = postService.home(pageable);
+        Pageable pageable1 = PageRequest.of(page, pageable.getPageSize(), pageable.getSort());
+        Page<Post> posts = postService.home(pageable1);
         Map<String, Object> result = new HashMap<>();
         result.put("posts", posts);
 
@@ -42,10 +38,11 @@ public class HomeController {
     }
 
     // 카테고리별 게시글 조회
-    @GetMapping("/posts/{category}")
-    public Map<String, Object> getPostsCategory(@PathVariable String category , @PageableDefault(page = 0,
+    @GetMapping("/posts/{category}/{page}")
+    public Map<String, Object> getPostsCategory(@PathVariable String category, @PathVariable int page, @PageableDefault(page = 0,
             size = 10, sort = "modifiedDt", direction = Sort.Direction.DESC) Pageable pageable) {
-        Page<Post> posts = postService.getPostsCategory(category,pageable);
+        Pageable pageable1 = PageRequest.of(page, pageable.getPageSize(), pageable.getSort());
+        Page<Post> posts = postService.getPostsCategory(category, pageable1);
 
         Map<String, Object> result = new HashMap<>();
         result.put("posts", posts);
