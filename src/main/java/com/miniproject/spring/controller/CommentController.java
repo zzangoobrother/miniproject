@@ -22,7 +22,7 @@ public class CommentController {
     }
 
     // 댓글 등록
-    @PostMapping("/comments")
+    @PostMapping("/comment")
     public Map<String, Object> createComment(@RequestBody CommentRequestDto commentRequestDto, @AuthenticationPrincipal UserDetailsImpl userDetails) throws HanghaeMiniException {
         Comment comment = commentService.createComment(commentRequestDto, userDetails);
 
@@ -30,13 +30,13 @@ public class CommentController {
         result.put("nickname", comment.getNickname());
         result.put("comment", comment.getComment());
         result.put("insertDt", comment.getInsertDt());
-        result.put("commentId", comment.getId());
+        result.put("id", comment.getId());
 
         return result;
     }
 
     // 댓글 수정
-    @PostMapping("/comments/{id}")
+    @PostMapping("/comment/{id}")
     public Map<String, Object> updateComment(@PathVariable Long id, @RequestBody CommentRequestDto commentRequestDto) {
         Map<String, Object> result = new HashMap<>();
         result.put("result", "success");
@@ -47,7 +47,7 @@ public class CommentController {
     }
 
     // 댓글 삭제
-    @DeleteMapping("/comments/{id}")
+    @DeleteMapping("/comment/{id}")
     public Map<String, String> deleteComment(@PathVariable Long id) {
         commentService.deleteComment(id);
 

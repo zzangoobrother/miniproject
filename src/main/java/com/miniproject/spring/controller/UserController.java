@@ -4,9 +4,12 @@ import com.miniproject.spring.dto.SignUpRequestDto;
 import com.miniproject.spring.dto.UserRequestDto;
 import com.miniproject.spring.exception.HanghaeMiniException;
 import com.miniproject.spring.model.User;
+import com.miniproject.spring.security.UserDetailsImpl;
 import com.miniproject.spring.security.jwt.JwtTokenProvider;
 import com.miniproject.spring.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
@@ -29,9 +32,13 @@ public class UserController {
     //가입 요청 처리
     @PostMapping("/signup")
     public Map<String, String> registerUser(@RequestBody SignUpRequestDto requestDto) throws HanghaeMiniException {
-        userService.registerUser(requestDto);
+        User user = userService.registerUser(requestDto);
         Map<String, String> result = new HashMap<>();
         result.put("result", "success");
+        result.put("id", String.valueOf(user.getId()));
+        result.put("email", user.getEmail());
+        result.put("nickname", user.getNickname());
+
         return result;
     }
 
@@ -42,7 +49,7 @@ public class UserController {
         User user = userService.login(requestDto);
 
         Map<String,String> result =new HashMap<>();
-        result.put("token",jwtTokenProvider.createToken(user.getEmail(), user.getEmail())); // "username" : {username}
+        result.put("token",jwtTokenProvider.createToken(user.getEmail(), user.getEmail(), user.getNickname())); // "username" : {username}
         result.put("email", user.getEmail());
         result.put("nickname", user.getNickname());
         result.put("result", "success");
@@ -60,4 +67,16 @@ public class UserController {
         return userService.duplicateNickname(signUpRequestDto);
     }
 
+    @GetMapping("/auth")
+    public Map<String, String> loginCheck(@AuthenticationPrincipal UserDetailsImpl userDetails) throws HanghaeMiniException {
+        if (userDetails == null) {
+            throw new HanghaeMiniException("로그인이 만료되었습니다. 재로그인 하세요!");
+        }
+        Map<String, String> result = new HashMap<>();
+        result.put("email", userDetails.getUser().getEmail());
+        result.put("nickname", userDetails.getUser().getNickname());
+        result.put("result", "success");
+
+        return result;
+    }
 }

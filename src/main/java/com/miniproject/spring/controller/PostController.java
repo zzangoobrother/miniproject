@@ -26,7 +26,7 @@ public class PostController {
     }
 
     // 게시글 조회
-    @GetMapping("/posts/{id}")
+    @GetMapping("/post/{id}")
     public Map<String, Object> getPosts(@PathVariable Long id) throws HanghaeMiniException {
         Post post = postService.getPosts(id);
         Map<String, Object> result = new HashMap<>();
@@ -37,34 +37,29 @@ public class PostController {
         result.put("insertDt", post.getInsertDt());
         result.put("nickname", post.getNickname());
 
-        List<Comment> comments = commentService.getComments();
+        List<Comment> comments = commentService.getComments(post);
         result.put("comments", comments);
 
         return result;
     }
 
     //게시물 작성
-    @PostMapping("/posts/new")
-    public Map<String, String> createPost(@RequestBody PostRequestDto postRequestDto, @AuthenticationPrincipal UserDetailsImpl userDetails) {
-           if(userDetails != null){
-               postRequestDto.setAuthor(userDetails.getUser().getNickname());
-           }
-           String ret = postService.createPost(postRequestDto);
-        //        Post post = new Post(postRequestDto,userDetails);
-//        post.setAuthor(userDetails.getUser().getNickname());
-        Map<String, String> result = new HashMap<>();
-//        result.put("nickname", post.getNickname());
-//        result.put("contents", post.getContents());
-//        result.put("title", post.getTitle());
-//        result.put("Author", post.getAuthor());
-        result.put("result", ret);
-        return result;
+    @PostMapping("/post")
+    public Map<String, Object> createPost(@RequestBody PostRequestDto postRequestDto, @AuthenticationPrincipal UserDetailsImpl userDetails) {
+        if(userDetails != null){
+            postRequestDto.setAuthor(userDetails.getUser().getEmail());
+        }
+        else {
+            postRequestDto.setAuthor("sss@naver.com");
+        }
+
+        return postService.createPost(postRequestDto);
 
     }
 
 
     //게시물 수정
-    @PostMapping ("/posts/{id}")
+    @PostMapping ("/post/{id}")
     public Map<String, Object> updatePost( @PathVariable Long id, @RequestBody PostRequestDto postRequestDto) throws HanghaeMiniException {
         Map<String, Object> result = new HashMap<>();
         result.put("result", "success");
@@ -77,8 +72,9 @@ public class PostController {
 
 
     //게시물 삭제
-    @DeleteMapping("/posts/{id}")
+    @DeleteMapping("/post/{id}")
     public Map<String, String> deletePost(@PathVariable Long id) {
+        commentService.deletePost(id);
         postService.deletePost(id);
 
         Map<String, String> result = new HashMap<>();

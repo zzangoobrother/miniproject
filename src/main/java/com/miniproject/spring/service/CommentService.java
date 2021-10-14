@@ -23,8 +23,8 @@ public class CommentService {
         this.commentRepository = commentRepository;
     }
 
-    public List<Comment> getComments() {
-        return commentRepository.findAll();
+    public List<Comment> getComments(Post post) {
+        return commentRepository.findAllByPostOrderByModifiedDtDesc(post);
     }
 
     //수정
@@ -49,11 +49,17 @@ public class CommentService {
 
         String nickname = "test 확인";
         if (userDetails != null) {
-            nickname = userDetails.getUsername();
+            nickname = userDetails.getUser().getNickname();
         }
         Comment comment = new Comment(nickname, commentRequestDto.getComment(), post);
         Comment saveComment = commentRepository.save(comment);
 
         return saveComment;
+    }
+
+    @Transactional
+    public void deletePost(Long id) {
+        Post post = postRepository.findById(id).orElseThrow(null);
+        commentRepository.deleteByPost(post);
     }
 }

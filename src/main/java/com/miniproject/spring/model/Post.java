@@ -1,13 +1,11 @@
 package com.miniproject.spring.model;
 
 import com.miniproject.spring.dto.PostRequestDto;
-import com.miniproject.spring.security.UserDetailsImpl;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
-import java.util.List;
 
 @Getter
 @NoArgsConstructor
@@ -18,6 +16,10 @@ public class Post extends TimeStamped {
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Id
     private Long id;
+
+    @Column(nullable = false)
+    @Enumerated(value = EnumType.STRING)
+    private PostCategoryEnum category;
 
     @Column(nullable = false)
     private String title;
@@ -31,11 +33,9 @@ public class Post extends TimeStamped {
     @Column(nullable = false)
     private String contents;
 
-    @OneToMany
-    private List<Comment> commentList;
-
-    public Post(String title, String author, String nickname, String contents) {
+    public Post(String title, PostCategoryEnum category, String author, String nickname, String contents) {
         this.title = title;
+        this.category = category;
         this.author = author;
         this.nickname = nickname;
         this.contents = contents;

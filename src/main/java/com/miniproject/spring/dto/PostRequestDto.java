@@ -12,6 +12,7 @@ import lombok.Setter;
 @Getter
 public class PostRequestDto {
     private Long id;
+    private String category;
     private String title;
     private String contents;
     private String author;

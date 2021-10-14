@@ -3,6 +3,7 @@ package com.miniproject.spring.model;
 import com.miniproject.spring.dto.CommentRequestDto;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.OnDelete;
 
 import javax.persistence.*;
 

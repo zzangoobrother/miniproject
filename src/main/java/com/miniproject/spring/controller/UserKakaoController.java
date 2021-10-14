@@ -28,7 +28,7 @@ public class UserKakaoController {
         User user = kakaoUserService.kakaoLogin(code);
 
         Map<String,String> result =new HashMap<>();
-        result.put("token",jwtTokenProvider.createToken(user.getNickname(), user.getEmail())); // "username" : {username}
+        result.put("token",jwtTokenProvider.createToken(user.getEmail(), user.getEmail(), user.getNickname())); // "username" : {username}
         result.put("email", user.getEmail());
         result.put("nickname", user.getNickname());
         result.put("result", "success");
