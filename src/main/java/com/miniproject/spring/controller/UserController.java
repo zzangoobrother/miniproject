@@ -67,6 +67,7 @@ public class UserController {
         return userService.duplicateNickname(signUpRequestDto);
     }
 
+
     @GetMapping("/auth")
     public Map<String, String> loginCheck(@AuthenticationPrincipal UserDetailsImpl userDetails) throws HanghaeMiniException {
         if (userDetails == null) {
