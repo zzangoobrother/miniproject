@@ -7,16 +7,12 @@ import com.miniproject.spring.model.Post;
 import com.miniproject.spring.security.UserDetailsImpl;
 import com.miniproject.spring.service.CommentService;
 import com.miniproject.spring.service.PostService;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Sort;
-import org.springframework.data.web.PageableDefault;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.stream.Collectors;
 
 @RestController
 public class PostController {
@@ -30,7 +26,7 @@ public class PostController {
     }
 
     // 게시글 조회
-    @GetMapping("/post/{id}")
+    @GetMapping("/posts/{id}")
     public Map<String, Object> getPosts(@PathVariable Long id) throws HanghaeMiniException {
         Post post = postService.getPosts(id);
         Map<String, Object> result = new HashMap<>();
@@ -48,7 +44,7 @@ public class PostController {
     }
 
     //게시물 작성
-    @PostMapping("/post")
+    @PostMapping("/posts")
     public Map<String, String> createPost(@RequestBody PostRequestDto postRequestDto, @AuthenticationPrincipal UserDetailsImpl userDetails) {
            if(userDetails != null){
                postRequestDto.setAuthor(userDetails.getUser().getNickname());
@@ -68,7 +64,7 @@ public class PostController {
 
 
     //게시물 수정
-    @PostMapping ("/post/{id}")
+    @PostMapping ("/posts/{id}")
     public Map<String, Object> updatePost( @PathVariable Long id, @RequestBody PostRequestDto postRequestDto) throws HanghaeMiniException {
         Map<String, Object> result = new HashMap<>();
         result.put("result", "success");
@@ -81,7 +77,7 @@ public class PostController {
 
 
     //게시물 삭제
-    @DeleteMapping("/post/{id}")
+    @DeleteMapping("/posts/{id}")
     public Map<String, String> deletePost(@PathVariable Long id) {
         postService.deletePost(id);
 
@@ -91,9 +87,4 @@ public class PostController {
         return result;
 
     }
-
-
-
-
-
 }
