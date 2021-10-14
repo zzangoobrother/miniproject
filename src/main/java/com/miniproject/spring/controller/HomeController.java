@@ -43,8 +43,9 @@ public class HomeController {
 
     // 카테고리별 게시글 조회
     @GetMapping("/posts/{category}")
-    public Map<String, Object> getPostsCategory(@PathVariable String category) {
-        List<Post> posts = postService.getPostsCategory(category);
+    public Map<String, Object> getPostsCategory(@PathVariable String category , @PageableDefault(page = 0,
+            size = 10, sort = "modifiedDt", direction = Sort.Direction.DESC) Pageable pageable) {
+        Page<Post> posts = postService.getPostsCategory(category,pageable);
 
         Map<String, Object> result = new HashMap<>();
         result.put("posts", posts);

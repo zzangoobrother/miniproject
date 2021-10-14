@@ -24,6 +24,7 @@ public class CommentService {
     }
 
     public List<Comment> getComments(Post post) {
+
         return commentRepository.findAllByPostOrderByModifiedDtDesc(post);
     }
 

@@ -74,6 +74,7 @@ public class PostService {
     }
 
     public Page<Post> home(Pageable pageable) {
+
         return postRepository.findAllByOrderByModifiedDt(pageable);
     }
 
@@ -83,9 +84,9 @@ public class PostService {
         );
     }
 
-    public List<Post> getPostsCategory(String category) {
+    public Page<Post> getPostsCategory(String category, Pageable pageable) {
         PostCategoryEnum categoryEnum = categorychoose(category);
-        return postRepository.findAllByCategoryOrderByModifiedDtDesc(categoryEnum);
+        return postRepository.findAllByCategoryOrderByModifiedDtDesc(categoryEnum,pageable);
     }
 }
 
