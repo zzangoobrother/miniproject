@@ -31,8 +31,8 @@ public class Post extends TimeStamped {
     @Column(nullable = false)
     private String contents;
 
-    @OneToMany
-    private List<Comment> commentList;
+//    @OneToMany
+//    private List<Comment> commentList;
 
     public Post(String title, String author, String nickname, String contents) {
         this.title = title;
