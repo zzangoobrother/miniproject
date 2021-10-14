@@ -2,13 +2,14 @@ package com.miniproject.spring.service;
 
 import com.miniproject.spring.dto.PostRequestDto;
 import com.miniproject.spring.exception.HanghaeMiniException;
-import com.miniproject.spring.model.Comment;
 import com.miniproject.spring.model.Post;
 import com.miniproject.spring.model.PostCategoryEnum;
 import com.miniproject.spring.model.User;
 import com.miniproject.spring.repository.PostRepository;
 import com.miniproject.spring.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
@@ -72,8 +73,8 @@ public class PostService {
         postRepository.deleteById(id);
     }
 
-    public List<Post> home() {
-        return postRepository.findAllByOrderByModifiedDtDesc();
+    public Page<Post> home(Pageable pageable) {
+        return postRepository.findAllByOrderByModifiedDt(pageable);
     }
 
     public Post getPosts(Long id) throws HanghaeMiniException {

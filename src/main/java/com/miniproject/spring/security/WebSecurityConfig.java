@@ -40,7 +40,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 // 회원 관리 처리 API (POST /user/**) 에 대해 CSRF 무시
 
         http.authorizeRequests()
-
+                .antMatchers("/images/**").permitAll()
                 // 회원 관리 처리 API 전부를 login 없이 허용
                 .antMatchers("/images/**").permitAll()
                 // css 폴더를 login 없이 허용
