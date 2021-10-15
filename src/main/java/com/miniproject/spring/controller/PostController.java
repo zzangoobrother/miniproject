@@ -1,6 +1,7 @@
 package com.miniproject.spring.controller;
 
 import com.miniproject.spring.dto.PostRequestDto;
+import com.miniproject.spring.dto.PostResponceDto;
 import com.miniproject.spring.exception.HanghaeMiniException;
 import com.miniproject.spring.model.Comment;
 import com.miniproject.spring.model.Post;
@@ -10,6 +11,7 @@ import com.miniproject.spring.service.PostService;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -65,8 +67,11 @@ public class PostController {
         result.put("result", "success");
 
         Post post = postService.updatePost(id, postRequestDto);
-        result.put("post",post);
+        List<Comment> comments = commentService.getComments(post);
 
+        PostResponceDto postResponceDto = new PostResponceDto(post.getId(), post.getCategory(), post.getTitle(), post.getAuthor(),
+                                                        post.getNickname(), post.getContents(), comments, post.getInsertDt(), post.getModifiedDt());
+        result.put("post",postResponceDto);
         return result;
     }
 
