@@ -1,8 +1,8 @@
 # 20조 REWIND Backend
 
 ### Team 
-+ Frontend : 오세명,한우석
-+ Backend :  오준석,최선강
++ Frontend : 오세명,한우석 (REACT)
++ Backend :  오준석,최선강 (SPRING)
 
 ### REWIND란?
 + 그 등안 Backend,Frontend 가 공부하고 정리했던 내용들을 각 프레임워크별 (Spring,React,Node.js)로 모두 공유할 수 있는 게시판을 구현하려고 합니다. 게시판 은 기본적으로 메인페이지에 모든 프레임워크들의 게시글들이 한번에 보여지며 각 카테고리속에는 그에 해당하는 게시글들만 보여지도록 구성할 계획입니다.
