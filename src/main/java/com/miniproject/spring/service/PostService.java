@@ -1,7 +1,9 @@
 package com.miniproject.spring.service;
 
 import com.miniproject.spring.dto.PostRequestDto;
+import com.miniproject.spring.dto.PostResponceDto;
 import com.miniproject.spring.exception.HanghaeMiniException;
+import com.miniproject.spring.model.Comment;
 import com.miniproject.spring.model.Post;
 import com.miniproject.spring.model.PostCategoryEnum;
 import com.miniproject.spring.model.User;
@@ -13,6 +15,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -46,7 +49,9 @@ public class PostService {
             Post post = new Post(postRequestDto.getTitle(), category, postRequestDto.getAuthor(), user.getNickname(), postRequestDto.getContents());
             Post savePost = postRepository.save(post);
 
-            result.put("post", savePost);
+            PostResponceDto postResponceDto = new PostResponceDto(savePost.getId(), savePost.getCategory(), savePost.getTitle(), savePost.getAuthor(),
+                    savePost.getNickname(), savePost.getContents(), new ArrayList<>(), savePost.getInsertDt(), savePost.getModifiedDt());
+            result.put("post", postResponceDto);
             result.put("result", "success");
 
         } catch (Exception e)
