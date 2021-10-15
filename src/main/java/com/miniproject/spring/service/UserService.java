@@ -35,7 +35,7 @@ public class UserService {
         // 패스워드 암호화
         String pw = passwordEncoder.encode(requestDto.getPw());
 
-        //email(id) 중복체크
+        //가입 email(id) 중복체크
         String email = requestDto.getEmail();
         Optional<User> found = userRepository.findByEmail(email);
         if (found.isPresent()){
@@ -43,7 +43,7 @@ public class UserService {
         }
 
 
-        //nickname 중복체크
+        //가입 nickname 중복체크
         String nickname = requestDto.getNickname();
         Optional<User> found2 = userRepository.findByNickname(nickname);
         if (found2.isPresent()) {
@@ -95,7 +95,7 @@ public class UserService {
         return user;
     }
 
-
+    // 로그인 중복 email
     public Map<String, String> duplicateId(UserRequestDto userRequestDto) {
         User user = userRepository.findByEmail(userRequestDto.getEmail()).orElse(null);
 
@@ -110,6 +110,7 @@ public class UserService {
         return result;
     }
 
+    //로그인 중복 닉네임
     public Map<String, String> duplicateNickname(SignUpRequestDto signUpRequestDto) {
         User user = userRepository.findByNickname(signUpRequestDto.getNickname()).orElse(null);
         Map<String, String> result = new HashMap<>();
