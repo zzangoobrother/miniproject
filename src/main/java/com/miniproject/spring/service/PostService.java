@@ -14,6 +14,7 @@ import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 @RequiredArgsConstructor
@@ -47,6 +48,7 @@ public class PostService {
 
             result.put("post", savePost);
             result.put("result", "success");
+
         } catch (Exception e)
         {
             result.put("result", "fail");
@@ -72,8 +74,8 @@ public class PostService {
         postRepository.deleteById(id);
     }
 
+    // 조회
     public Page<Post> home(Pageable pageable) {
-
         return postRepository.findAllByOrderByModifiedDtDesc(pageable);
     }
 
