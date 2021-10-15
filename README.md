@@ -93,4 +93,4 @@ REDIRECT_URI이 기존 설계 경로와는 다르게 설정되어있었다는 �
 
 </details>
 
-[YOUTUBE 영상]("http://youtube.com") 
+[YOUTUBE 영상](http://youtube.com) 
