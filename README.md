@@ -19,7 +19,7 @@
 <summary>
 API설계
 </summary>
- <div style="width:60%; margin: auto" >
+ <div style="width:700px; margin: auto" >
 <img src = "https://media.vlpt.us/images/junseokoo/post/cecb061f-ef1f-41d7-a2d5-2d467c8d8012/%EC%84%A4%EA%B3%84%201.PNG">
 <img src = "https://media.vlpt.us/images/junseokoo/post/3532dbc5-1f09-46e5-ae68-faf89f669f73/%EC%84%A4%EA%B3%842.PNG">
 <img src = "https://media.vlpt.us/images/junseokoo/post/a9e40ba8-9150-48c5-8096-5d1db26eadfe/%EC%84%A4%EA%B3%843.PNG">
@@ -50,7 +50,7 @@ Diagrams
 
 
 ## 카카오 로그인
-<div style="width: 60%; margin: 20px auto" >
+<div style="width: 700px; margin: 20px auto" >
 <img src = "https://media.vlpt.us/images/junseokoo/post/2e4ee263-f81b-4144-9d54-4c58c6a2b57b/qwert.PNG">
 </div>
 
@@ -71,9 +71,9 @@ REDIRECT_URI이 기존 설계 경로와는 다르게 설정되어있었다는 �
 + 처음 프로젝트에서 시도 했던 구현이 회원가입과 로그인 구현입니다. 로그인한 회원이
   정상적인 회원이라면 토큰을 발행하여 프로트 서버에 보냅니다. 그리고 프론트에서는
   http 헤더에 토큰을 저장하여 매번 통신을 할때 마다 서버는 토큰을 확인합니다.
-<div style="width: 60%; margin: 20px auto" >
+<div style="width: 650px; margin: 20px auto" >
 <img src= "https://media.vlpt.us/images/junseokoo/post/8c49c470-c19c-47cb-9106-d7a219bcd33c/asdf.PNG">
-</div><div style="width: 60%; margin: 20px auto" >
+<br></br>
 <img src = "https://media.vlpt.us/images/junseokoo/post/639091d3-3006-4fcb-a88f-f95ebdb79d5e/asdfgh.PNG">
 </div>
 
