@@ -58,7 +58,7 @@ public class UserService {
         if (!password.isEmpty() && !passwordCheck.isEmpty()) {
             if (password.length() >= 6 && password.length() <= 20) {
                 if (!password.equals(passwordCheck)) {
-                    throw new HanghaeMiniException(ErrorCode.PASSWORD_DISCORDANCE);
+                    throw new HanghaeMiniException(ErrorCode.USER_NOT_FOUND);
                 }
             } else {
                 throw new HanghaeMiniException(ErrorCode.PASSWORD_PATTERN_LENGTH);
@@ -85,12 +85,12 @@ public class UserService {
 
     public User login(UserRequestDto requestDto) throws HanghaeMiniException {
         User user = userRepository.findByEmail(requestDto.getEmail()).orElseThrow(
-                () -> new HanghaeMiniException(ErrorCode.EMAIL_NOT_FOUND)
+                () -> new HanghaeMiniException(ErrorCode.USER_NOT_FOUND)
         );
 
         // 패스워드 암호화
         if (!passwordEncoder.matches(requestDto.getPw(), user.getPw())) {
-            throw new HanghaeMiniException(ErrorCode.PASSWORD_DISCORDANCE);
+            throw new HanghaeMiniException(ErrorCode.USER_NOT_FOUND);
         }
 
         return user;
