@@ -36,7 +36,6 @@ public class WebConfig implements WebMvcConfigurer {
 
     @Bean
     public MappingJackson2HttpMessageConverter jsonEscapeConverter() {
-        System.out.println("filter");
         ObjectMapper copy = objectMapper.copy();
         copy.getFactory().setCharacterEscapes(new HtmlCharacterEscapes());
         return new MappingJackson2HttpMessageConverter(copy);
