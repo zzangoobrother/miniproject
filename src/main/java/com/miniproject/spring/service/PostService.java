@@ -52,6 +52,7 @@ public class PostService {
                     savePost.getNickname(), savePost.getContents(), new ArrayList<>(), savePost.getInsertDt(), savePost.getModifiedDt());
             result.put("post", postResponceDto);
             result.put("result", "success");
+
         } catch (Exception e)
         {
             result.put("result", "fail");
@@ -77,8 +78,8 @@ public class PostService {
         postRepository.deleteById(id);
     }
 
+    // 조회
     public Page<Post> home(Pageable pageable) {
-
         return postRepository.findAllByOrderByModifiedDtDesc(pageable);
     }
 
