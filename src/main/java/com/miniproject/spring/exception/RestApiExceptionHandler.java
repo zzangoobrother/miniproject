@@ -13,7 +13,7 @@ public class RestApiExceptionHandler {
         RestApiException restApiException = new RestApiException();
         restApiException.setResult("fail");
         restApiException.setHttpStatus(HttpStatus.OK);
-        restApiException.setErrorMessage(ex.getMessage());
+        restApiException.setErrorMessage(ex.getErrorCode().getMessage());
 
         return new ResponseEntity(
                 restApiException,

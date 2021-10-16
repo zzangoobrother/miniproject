@@ -2,8 +2,8 @@ package com.miniproject.spring.service;
 
 import com.miniproject.spring.dto.PostRequestDto;
 import com.miniproject.spring.dto.PostResponceDto;
+import com.miniproject.spring.exception.ErrorCode;
 import com.miniproject.spring.exception.HanghaeMiniException;
-import com.miniproject.spring.model.Comment;
 import com.miniproject.spring.model.Post;
 import com.miniproject.spring.model.PostCategoryEnum;
 import com.miniproject.spring.model.User;
@@ -17,7 +17,6 @@ import org.springframework.stereotype.Service;
 import javax.transaction.Transactional;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 @RequiredArgsConstructor
@@ -31,7 +30,7 @@ public class PostService {
     @Transactional
     public Post updatePost(Long id, PostRequestDto postRequestDto) throws HanghaeMiniException {
         Post post = postRepository.findById(id).orElseThrow(
-                () -> new HanghaeMiniException("존재하지않습니다.")
+                () -> new HanghaeMiniException(ErrorCode.POST_NOT_FOUND)
         );
         post.update(postRequestDto);
         return post;
@@ -85,7 +84,7 @@ public class PostService {
 
     public Post getPosts(Long id) throws HanghaeMiniException {
         return postRepository.findById(id).orElseThrow(
-                () -> new HanghaeMiniException("게시글을 찾을 수 없습니다.")
+                () -> new HanghaeMiniException(ErrorCode.POST_NOT_FOUND)
         );
     }
 

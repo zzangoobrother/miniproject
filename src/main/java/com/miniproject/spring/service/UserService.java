@@ -2,6 +2,7 @@ package com.miniproject.spring.service;
 
 import com.miniproject.spring.dto.SignUpRequestDto;
 import com.miniproject.spring.dto.UserRequestDto;
+import com.miniproject.spring.exception.ErrorCode;
 import com.miniproject.spring.exception.HanghaeMiniException;
 import com.miniproject.spring.model.User;
 import com.miniproject.spring.model.UserRoleEnum;
@@ -39,7 +40,7 @@ public class UserService {
         String email = requestDto.getEmail();
         Optional<User> found = userRepository.findByEmail(email);
         if (found.isPresent()){
-            throw new HanghaeMiniException("중복된 email이 존재합니다.");
+            throw new HanghaeMiniException(ErrorCode.EMAIL_DUPLICATE);
         }
 
 
@@ -47,7 +48,7 @@ public class UserService {
         String nickname = requestDto.getNickname();
         Optional<User> found2 = userRepository.findByNickname(nickname);
         if (found2.isPresent()) {
-            throw new HanghaeMiniException("중복된 닉네임이 존재합니다.");
+            throw new HanghaeMiniException(ErrorCode.NICKNAME_DUPLICATE);
         }
 
         //비밀번호확인
@@ -57,14 +58,14 @@ public class UserService {
         if (!password.isEmpty() && !passwordCheck.isEmpty()) {
             if (password.length() >= 6 && password.length() <= 20) {
                 if (!password.equals(passwordCheck)) {
-                    throw new HanghaeMiniException("비밀번호가 일치하지 않습니다.");
+                    throw new HanghaeMiniException(ErrorCode.PASSWORD_DISCORDANCE);
                 }
             } else {
-                throw new HanghaeMiniException("비밀번호는 6~20자리로 해주세요");
+                throw new HanghaeMiniException(ErrorCode.PASSWORD_PATTERN_LENGTH);
 
             }
         } else {
-            throw new HanghaeMiniException("비밀번호를 입력해주세요");
+            throw new HanghaeMiniException(ErrorCode.PASSWORD_ENTER);
         }
 
 
@@ -73,7 +74,7 @@ public class UserService {
         UserRoleEnum role = UserRoleEnum.USER;
         if (requestDto.isAdmin()) {
             if (!requestDto.getAdminToken().equals(ADMIN_TOKEN)) {
-                throw new HanghaeMiniException("관리자 암호가 틀려 등록이 불가능합니다.");
+                throw new HanghaeMiniException(ErrorCode.ADMIN_PASSWORD_DISCORDANCE);
             }
             role = UserRoleEnum.ADMIN;
         }
@@ -84,12 +85,12 @@ public class UserService {
 
     public User login(UserRequestDto requestDto) throws HanghaeMiniException {
         User user = userRepository.findByEmail(requestDto.getEmail()).orElseThrow(
-                () -> new HanghaeMiniException("이메일을 찾을 수 없습니다.")
+                () -> new HanghaeMiniException(ErrorCode.EMAIL_NOT_FOUND)
         );
 
         // 패스워드 암호화
         if (!passwordEncoder.matches(requestDto.getPw(), user.getPw())) {
-            throw new HanghaeMiniException("비밀번호가 맞지 않습니다.");
+            throw new HanghaeMiniException(ErrorCode.PASSWORD_DISCORDANCE);
         }
 
         return user;

@@ -2,6 +2,7 @@ package com.miniproject.spring.controller;
 
 import com.miniproject.spring.dto.SignUpRequestDto;
 import com.miniproject.spring.dto.UserRequestDto;
+import com.miniproject.spring.exception.ErrorCode;
 import com.miniproject.spring.exception.HanghaeMiniException;
 import com.miniproject.spring.model.User;
 import com.miniproject.spring.security.UserDetailsImpl;
@@ -71,7 +72,7 @@ public class UserController {
     @GetMapping("/auth")
     public Map<String, String> loginCheck(@AuthenticationPrincipal UserDetailsImpl userDetails) throws HanghaeMiniException {
         if (userDetails == null) {
-            throw new HanghaeMiniException("로그인이 만료되었습니다. 재로그인 하세요!");
+            throw new HanghaeMiniException(ErrorCode.LOGIN_TOKEN_EXPIRE);
         }
         Map<String, String> result = new HashMap<>();
         result.put("email", userDetails.getUser().getEmail());

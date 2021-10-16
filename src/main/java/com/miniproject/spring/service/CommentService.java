@@ -1,6 +1,7 @@
 package com.miniproject.spring.service;
 
 import com.miniproject.spring.dto.CommentRequestDto;
+import com.miniproject.spring.exception.ErrorCode;
 import com.miniproject.spring.exception.HanghaeMiniException;
 import com.miniproject.spring.model.Comment;
 import com.miniproject.spring.model.Post;
@@ -45,7 +46,7 @@ public class CommentService {
     //등록
     public Comment createComment(CommentRequestDto commentRequestDto, UserDetailsImpl userDetails) throws HanghaeMiniException {
         Post post = postRepository.findById(commentRequestDto.getPostId()).orElseThrow(
-                () -> new HanghaeMiniException("해당 게시글을 찾을 수 없습니다.")
+                () -> new HanghaeMiniException(ErrorCode.POST_NOT_FOUND)
         );
 
         String nickname = "test 확인";

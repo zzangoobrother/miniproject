@@ -28,7 +28,7 @@ public class HomeController {
     // 메인페이지 게시글 전체 조회
     @GetMapping("/posts/{page}")
     public Map<String, Object> home(@PathVariable int page, @PageableDefault(page = 0,
-            size = 10, sort = "modifiedDt", direction = Sort.Direction.DESC) Pageable pageable) {
+            size = 12, sort = "modifiedDt", direction = Sort.Direction.DESC) Pageable pageable) {
         Pageable pageable1 = PageRequest.of(page, pageable.getPageSize(), pageable.getSort());
         Page<Post> posts = postService.home(pageable1);
         Map<String, Object> result = new HashMap<>();
@@ -40,7 +40,7 @@ public class HomeController {
     // 카테고리별 게시글 조회
     @GetMapping("/posts/{category}/{page}")
     public Map<String, Object> getPostsCategory(@PathVariable String category, @PathVariable int page, @PageableDefault(page = 0,
-            size = 10, sort = "modifiedDt", direction = Sort.Direction.DESC) Pageable pageable) {
+            size = 12, sort = "modifiedDt", direction = Sort.Direction.DESC) Pageable pageable) {
         Pageable pageable1 = PageRequest.of(page, pageable.getPageSize(), pageable.getSort());
         Page<Post> posts = postService.getPostsCategory(category, pageable1);
 

@@ -1,9 +1,13 @@
 package com.miniproject.spring.exception;
 
+import lombok.Getter;
+
+@Getter
 public class HanghaeMiniException extends Exception {
 
-    public HanghaeMiniException(String message) {
+    private final ErrorCode errorCode;
 
-        super(message);
+    public HanghaeMiniException(ErrorCode errorCode) {
+        this.errorCode = errorCode;
     }
 }
